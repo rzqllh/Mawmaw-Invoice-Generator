@@ -1,0 +1,83 @@
+<!-- === Hafizh Signature Code ===
+Author: Hafizh Rizqullah — Invoice Generator
+File: index.html
+Created: 2025-08-14 11:05:00 -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invoicer</title>
+  <!-- Bulma Framework (for Grid System & Helpers) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- TinyMCE -->
+  <script src="https://cdn.tiny.cloud/1/qsowa2oxzv8qij7v5muqjx3obtyzvj9o30w7juw5yzlb5qup/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+  <!-- Custom Styles (Full Rebuild 2.0) -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/preview.css" />
+</head>
+<body>
+
+  <!-- The main canvas where the preview lives -->
+  <main class="preview-canvas">
+    <div id="invoice-canvas" class="a4-container">
+      <!-- Preview will be rendered here by JavaScript -->
+    </div>
+  </main>
+
+  <!-- The floating panel that slides in for editing -->
+  <aside id="floating-panel" class="floating-panel">
+    <div class="panel-header">
+      <h2 id="panel-title" class="panel-title">Edit</h2>
+      <button id="panel-close-btn" class="delete" aria-label="close"></button>
+    </div>
+    <div id="panel-content" class="panel-content">
+      <!-- Dynamic editor content will be rendered here -->
+    </div>
+  </aside>
+
+  <!-- The main action toolbar -->
+  <div class="action-toolbar">
+    <button class="button" data-action="new" title="Dokumen Baru">Baru</button>
+    <button class="button" data-action="save" title="Simpan Preset">Simpan</button>
+    <button class="button" data-action="load" title="Muat Preset">Muat</button>
+    <div class="divider"></div>
+    <button class="button is-info" data-panel="info" title="Edit Info Dokumen">Info</button>
+    <button class="button is-info" data-panel="items" title="Edit Item Pekerjaan">Items</button>
+    <button class="button is-info" data-panel="payment" title="Edit Catatan & Pembayaran">Catatan</button>
+    <div class="divider"></div>
+    <button data-action="print" class="button is-primary">Simpan PDF</button>
+  </div>
+
+  <div id="app-overlay" class="app-overlay"></div>
+
+  <!-- Save Preset Modal -->
+  <div id="save-preset-modal" class="modal">
+    <div class="modal-background" data-action="cancel-save-preset"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Simpan Preset</p>
+        <button class="delete" aria-label="close" data-action="cancel-save-preset"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Simpan preset sebagai:</label>
+          <div class="control">
+            <input id="preset-name-input" class="input" type="text" placeholder="Contoh: Template Klien A">
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" data-action="confirm-save-preset">Simpan</button>
+        <button class="button" data-action="cancel-save-preset">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
