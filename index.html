@@ -32,7 +32,10 @@ Created: 2025-08-14 11:05:00 -->
   <!-- The floating panel that slides in for editing -->
   <aside id="floating-panel" class="floating-panel">
     <div class="panel-header">
-      <h2 id="panel-title" class="panel-title">Edit</h2>
+      <h2 id="panel-title" class="panel-title">Editor</h2>
+      <div id="panel-tabs" class="panel-tabs">
+        <!-- Tabs will be rendered here by JavaScript -->
+      </div>
       <button id="panel-close-btn" class="delete" aria-label="close"></button>
     </div>
     <div id="panel-content" class="panel-content">
@@ -40,15 +43,24 @@ Created: 2025-08-14 11:05:00 -->
     </div>
   </aside>
 
-  <!-- The main action toolbar -->
+  <!-- The main action toolbar (REFACTORED for simplicity) -->
   <div class="action-toolbar">
-    <button class="button" data-action="new" title="Dokumen Baru">Baru</button>
-    <button class="button" data-action="save" title="Simpan Preset">Simpan</button>
-    <button class="button" data-action="load" title="Muat Preset">Muat</button>
+    <div class="dropdown" id="document-dropdown">
+      <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="document-menu" data-action="toggle-dropdown">
+          <span>Dokumen</span>
+        </button>
+      </div>
+      <div class="dropdown-menu" id="document-menu" role="menu">
+        <div class="dropdown-content">
+          <a href="#" class="dropdown-item" data-action="new">Dokumen Baru</a>
+          <a href="#" class="dropdown-item" data-action="save">Simpan Preset</a>
+          <a href="#" class="dropdown-item" data-action="load">Muat Preset</a>
+        </div>
+      </div>
+    </div>
     <div class="divider"></div>
-    <button class="button is-info" data-panel="info" title="Edit Info Dokumen">Info</button>
-    <button class="button is-info" data-panel="items" title="Edit Item Pekerjaan">Items</button>
-    <button class="button is-info" data-panel="payment" title="Edit Catatan & Pembayaran">Catatan</button>
+    <button class="button is-info" data-action="toggle-panel" title="Buka/Tutup Editor">Edit</button>
     <div class="divider"></div>
     <button data-action="print" class="button is-primary">Simpan PDF</button>
   </div>

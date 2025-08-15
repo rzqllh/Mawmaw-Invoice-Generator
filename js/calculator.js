@@ -48,12 +48,14 @@ export function calculate(data) {
     // Final calculations
     const discountValue = subtotal * (parseNum(data.summary.discountPct) / 100);
     const totalAfterDiscount = subtotal - discountValue;
-    const finalTotal = totalAfterDiscount + parseNum(data.summary.rounding);
+    const rounding = parseNum(data.summary.rounding); // Parse the rounding value
+    const finalTotal = totalAfterDiscount + rounding; // Use the parsed value
 
     return {
         subtotal,
         discountValue,
         totalAfterDiscount,
+        rounding, // Return the parsed rounding value for the template
         finalTotal,
         itemGroups, // Pass this back for the renderer to use
     };

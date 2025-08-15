@@ -95,7 +95,7 @@ export function handleFieldUpdate(path, value) {
       mutators.updateStateValue('paymentInfo.accountHolder', selectedBank.defaultHolder);
       mutators.updateStateValue('paymentInfo.accountNumber', selectedBank.defaultNumber);
     }
-    return true; // Needs re-render of panel
+    return true; // Needs re-render of panel content
   }
   return false; // No full panel re-render needed, only preview
 }

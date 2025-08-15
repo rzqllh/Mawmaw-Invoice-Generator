@@ -67,15 +67,21 @@ export function setInvoiceState(newInvoiceState) {
 export function resetState() {
     state.invoiceRinci = getDefaultInvoiceRinciState();
     state.ui.isPanelOpen = false;
-    state.ui.activePanel = null;
+    state.ui.activeEditorTab = 'info'; // Reset to the default tab
 }
 
 /**
- * Manages the UI panel state.
+ * Manages the UI panel visibility.
  * @param {boolean} isOpen - Whether the panel should be open.
- * @param {string|null} panelContext - The context of the panel ('info', 'items', 'payment').
  */
-export function setPanelState(isOpen, panelContext = null) {
+export function setPanelVisibility(isOpen) {
     state.ui.isPanelOpen = isOpen;
-    state.ui.activePanel = isOpen ? panelContext : null;
+}
+
+/**
+ * Sets the active tab in the editor panel.
+ * @param {string} tabName - The context of the panel ('info', 'items', 'payment').
+ */
+export function setActiveEditorTab(tabName) {
+    state.ui.activeEditorTab = tabName;
 }

@@ -15,6 +15,7 @@ export const state = {
   invoiceRinci: getDefaultInvoiceRinciState(),
   ui: {
     isPanelOpen: false,
-    activePanel: null, // 'info', 'items', 'payment'
+    // REFACTORED: 'activePanel' is now 'activeEditorTab' to support the new tabbed interface.
+    activeEditorTab: 'info', // 'info', 'items', 'payment'
   }
 };

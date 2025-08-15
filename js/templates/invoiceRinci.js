@@ -7,6 +7,7 @@ import { fmtIDR, parseNum, escapeHtml, formatDateFull, renderHtml } from '../uti
 import { calculate } from '../calculator.js';
 
 export function render(data) {
+    // All calculation logic is now handled by the imported calculator module.
     const calc = calculate(data);
 
     const itemsHtml = data.items.map((item, index) => {
@@ -60,7 +61,7 @@ export function render(data) {
             <tr><td class="summary-label">Total</td><td class="summary-value">${fmtIDR(calc.subtotal)}</td></tr>
             ${calc.discountValue > 0 ? `<tr><td class="summary-label">Potongan (${data.summary.discountPct}%)</td><td class="summary-value">- ${fmtIDR(calc.discountValue)}</td></tr>` : ''}
             ${calc.discountValue > 0 ? `<tr><td class="summary-label">Subtotal</td><td class="summary-value">${fmtIDR(calc.totalAfterDiscount)}</td></tr>` : ''}
-            ${data.summary.rounding !== 0 ? `<tr><td class="summary-label">Pembulatan</td><td class="summary-value">${fmtIDR(calc.rounding)}</td></tr>` : ''}
+            ${calc.rounding !== 0 ? `<tr><td class="summary-label">Pembulatan</td><td class="summary-value">${fmtIDR(calc.rounding)}</td></tr>` : ''}
             <tr class="grand-total"><td class="summary-label">Grand Total</td><td class="summary-value">${fmtIDR(calc.finalTotal)}</td></tr>
           </tbody>
         </table>

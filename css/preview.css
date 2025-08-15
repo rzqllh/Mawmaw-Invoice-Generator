@@ -167,13 +167,18 @@ Created: 2025-08-14 11:05:00 */
   margin-bottom: 2rem; /* Space between stacked sections */
 }
 
-/* --- ADDED: STYLING FOR RICH TEXT CONTENT --- */
+/* --- STYLING FOR RICH TEXT CONTENT --- */
 .terms-content ul, .terms-content ol {
   padding-left: 1.5em; /* Indent lists properly */
   margin: 0.5em 0;
 }
+/* FIXED: Explicitly set list-style-type for unordered lists */
+.terms-content ul {
+  list-style-type: disc;
+}
 .terms-content li {
   margin-bottom: 0.5em; /* Space out list items */
+  padding-left: 0.5em; /* Add space between bullet and text */
 }
 .terms-content a {
   color: var(--color-accent);
@@ -185,7 +190,7 @@ Created: 2025-08-14 11:05:00 */
 .terms-content p:last-child {
   margin-bottom: 0;
 }
-/* --- END OF ADDED STYLES --- */
+/* --- END OF STYLES --- */
 
 .milestones-table {
   width: 100%;

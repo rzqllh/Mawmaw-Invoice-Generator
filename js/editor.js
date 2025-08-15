@@ -10,11 +10,11 @@ import { saveStateToStorage } from './storage.js';
 import { escapeHtml } from './utils.js';
 
 let activeTemplateModule = null;
-const panelTitles = {
-  info: 'Info Dokumen',
-  items: 'Item Pekerjaan',
-  payment: 'Catatan & Pembayaran'
-};
+const TABS = [
+  { id: 'info', label: 'Info' },
+  { id: 'items', label: 'Items' },
+  { id: 'payment', label: 'Catatan' },
+];
 let tinymceEditor = null;
 
 // --- Main Render Function (The Conductor) ---
@@ -29,17 +29,27 @@ export function renderApp(templateModule) {
 function renderPanel() {
   const panel = document.getElementById('floating-panel');
   const overlay = document.getElementById('app-overlay');
-  const panelTitle = document.getElementById('panel-title');
 
   if (state.ui.isPanelOpen) {
     panel.classList.add('is-open');
     overlay.classList.add('is-active');
-    panelTitle.textContent = panelTitles[state.ui.activePanel] || 'Edit';
-    renderEditorPanelContent();
+    renderPanelTabs();
+    renderPanelContent();
   } else {
     panel.classList.remove('is-open');
     overlay.classList.remove('is-active');
   }
+}
+
+function renderPanelTabs() {
+  const tabsContainer = document.getElementById('panel-tabs');
+  tabsContainer.innerHTML = TABS.map(tab => `
+    <button 
+      class="tab-button ${state.ui.activeEditorTab === tab.id ? 'is-active' : ''}" 
+      data-tab="${tab.id}">
+      ${tab.label}
+    </button>
+  `).join('');
 }
 
 // --- Preview Renderer ---
@@ -51,11 +61,11 @@ function renderPreview() {
 }
 
 // --- Panel Content Renderer ---
-function renderEditorPanelContent() {
+function renderPanelContent() {
   const data = state.invoiceRinci;
   const contentDiv = document.getElementById('panel-content');
   
-  switch (state.ui.activePanel) {
+  switch (state.ui.activeEditorTab) {
     case 'info':
       contentDiv.innerHTML = `
         <div class="field"><label class="label">Logo Brand</label><div class="control"><input type="file" id="logo-upload" accept="image/*" class="input"></div></div>
@@ -94,7 +104,7 @@ function renderEditorPanelContent() {
       const { paymentInfo } = data;
       contentDiv.innerHTML = `
         <div class="field"><label class="label">Potongan (%)</label><div class="control"><input type="number" data-path="summary.discountPct" class="input" value="${data.summary.discountPct}"></div></div>
-        <div class="field"><label class="label">Pembulatan</label><div class="control"><input type="number" data-path="summary.rounding" class="input" value="${data.summary.rounding}"></div></div>
+        <div class="field"><label class="label">Pembulatan (+/-)</label><div class="control"><input type="number" data-path="summary.rounding" class="input" value="${data.summary.rounding}" placeholder="e.g. 500 or -500"></div></div>
         <hr>
         <div class="field"><label class="label">Syarat & Ketentuan</label>
             <textarea id="terms-editor"></textarea>
@@ -138,14 +148,13 @@ function renderEditorPanelContent() {
 
 // --- TinyMCE Initializer ---
 function initTinyMCE() {
-    tinymce.remove('#terms-editor'); // Ensure no old instances are lingering
+    tinymce.remove('#terms-editor');
     tinymce.init({
       selector: '#terms-editor',
       menubar: false,
-      // UPDATED: Added more plugins and a more comprehensive toolbar
       plugins: 'lists autolink link',
       toolbar: 'undo redo | bold italic underline | bullist numlist | alignleft aligncenter alignright | link',
-      height: 200, // Increased height for better editing experience
+      height: 200,
       content_style: "body { font-family: 'Inter', sans-serif; font-size: 14px; }",
       setup: (editor) => {
         tinymceEditor = editor;
@@ -167,7 +176,6 @@ const saveModal = document.getElementById('save-preset-modal');
 const presetNameInput = document.getElementById('preset-name-input');
 
 function openSaveModal() {
-  presetNameInput.value = '';
   saveModal.classList.add('is-active');
   presetNameInput.focus();
 }
@@ -179,24 +187,27 @@ function closeSaveModal() {
 // --- Event Listeners Initializer ---
 export function initEventListeners() {
   const panel = document.getElementById('floating-panel');
+  const docDropdown = document.getElementById('document-dropdown');
 
-  // Delegated listener for all actions
+  // Delegated listener for all body-level actions
   document.body.addEventListener('click', (e) => {
     const actionTarget = e.target.closest('[data-action]');
     if (actionTarget) {
-      const { action, index } = actionTarget.dataset;
-      let needsRender = false;
+      const { action } = actionTarget.dataset;
+      let needsFullRender = false;
 
       switch (action) {
-        case 'new': needsRender = actions.createNewDocument(); break;
-        case 'save': openSaveModal(); break; // Open modal instead of prompt
-        case 'load': needsRender = actions.loadPreset(); break;
+        case 'new': needsFullRender = actions.createNewDocument(); break;
+        case 'save': openSaveModal(); break;
+        case 'load': needsFullRender = actions.loadPreset(); break;
         case 'print': actions.printDocument(); break;
-        case 'add-header': actions.addHeader(); needsRender = true; break;
-        case 'add-item': actions.addItem(); needsRender = true; break;
-        case 'delete-item': actions.deleteItem(Number(index)); needsRender = true; break;
-        case 'add-milestone': actions.addMilestone(); needsRender = true; break;
-        case 'delete-milestone': actions.deleteMilestone(Number(index)); needsRender = true; break;
+        case 'toggle-panel':
+          mutators.setPanelVisibility(!state.ui.isPanelOpen);
+          needsFullRender = true;
+          break;
+        case 'toggle-dropdown':
+          docDropdown.classList.toggle('is-active');
+          return; // Prevent dropdown from closing immediately
         case 'confirm-save-preset': 
           actions.confirmSavePreset(presetNameInput.value);
           closeSaveModal();
@@ -204,28 +215,55 @@ export function initEventListeners() {
         case 'cancel-save-preset': closeSaveModal(); break;
       }
       
-      if (needsRender) renderApp(activeTemplateModule);
+      if (needsFullRender) renderApp(activeTemplateModule);
+    }
+    
+    // Close dropdown if clicking outside
+    if (!docDropdown.contains(e.target)) {
+      docDropdown.classList.remove('is-active');
     }
   });
 
-  // Listener for panel toggles
-  document.querySelector('.action-toolbar').addEventListener('click', (e) => {
-    const panelTarget = e.target.closest('[data-panel]');
-    if (panelTarget) {
-      mutators.setPanelState(true, panelTarget.dataset.panel);
-      renderApp(activeTemplateModule);
+  // Listener for panel-specific actions (tabs and content)
+  panel.addEventListener('click', (e) => {
+    // Tab switching
+    const tabTarget = e.target.closest('[data-tab]');
+    if (tabTarget) {
+      mutators.setActiveEditorTab(tabTarget.dataset.tab);
+      renderPanelTabs(); // Re-render tabs to show active state
+      renderPanelContent(); // Re-render content for the new tab
+      return;
+    }
+
+    // Item/Milestone actions
+    const itemActionTarget = e.target.closest('[data-action]');
+    if (itemActionTarget) {
+      const { action, index } = itemActionTarget.dataset;
+      let needsContentRender = false;
+      switch (action) {
+        case 'add-header': actions.addHeader(); needsContentRender = true; break;
+        case 'add-item': actions.addItem(); needsContentRender = true; break;
+        case 'delete-item': actions.deleteItem(Number(index)); needsContentRender = true; break;
+        case 'add-milestone': actions.addMilestone(); needsContentRender = true; break;
+        case 'delete-milestone': actions.deleteMilestone(Number(index)); needsContentRender = true; break;
+      }
+      if (needsContentRender) {
+        renderPanelContent();
+        renderPreview();
+        saveStateToStorage();
+      }
     }
   });
 
   // Listeners for closing the panel
   const closePanel = () => {
-    mutators.setPanelState(false);
+    mutators.setPanelVisibility(false);
     renderApp(activeTemplateModule);
   };
   document.getElementById('panel-close-btn').addEventListener('click', closePanel);
   document.getElementById('app-overlay').addEventListener('click', closePanel);
 
-  // Delegated listener for all form inputs
+  // Delegated listener for all form inputs within the panel
   panel.addEventListener('input', (e) => {
     const inputTarget = e.target.closest('[data-path]');
     if (!inputTarget) return;
@@ -233,9 +271,9 @@ export function initEventListeners() {
     const { path } = inputTarget.dataset;
     const value = inputTarget.value;
     
-    const needsPanelRender = actions.handleFieldUpdate(path, value);
-    if (needsPanelRender) {
-      renderEditorPanelContent();
+    const needsPanelReRender = actions.handleFieldUpdate(path, value);
+    if (needsPanelReRender) {
+      renderPanelContent(); // e.g., for bank selection logic
     }
     renderPreview();
     saveStateToStorage();
