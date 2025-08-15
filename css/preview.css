@@ -3,35 +3,49 @@ Author: Hafizh Rizqullah — Invoice Generator
 File: css/preview.css
 Created: 2025-08-14 11:05:00 */
 
+:root {
+  --color-accent: #007aff; /* Professional Blue, consistent with UI buttons */
+  --color-text-primary: #111827; /* Darker black for high contrast text */
+  --color-text-secondary: #6b7280; /* Grey for less important text */
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #d1d5db;
+  --color-bg-subtle: #f9fafb; /* Very light grey for backgrounds */
+}
+
 .invoice-rinci {
   padding: 2cm;
   font-family: 'Inter', sans-serif;
   font-size: 9pt;
   color: #374151;
-  line-height: 1.25;
+  line-height: 1.4; /* Increased line height for better readability */
 }
+
 .invoice-header {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
+
 .invoice-title-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #111827;
+  border-bottom: 2px solid var(--color-text-primary);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
 }
+
 .invoice-title-section h1 {
-  font-size: 24pt;
+  font-size: 22pt;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text-primary);
   line-height: 1;
 }
+
 .invoice-title-section .logo {
   max-height: 50px;
   width: auto;
   object-fit: contain;
 }
+
 .company-details {
   display: flex;
   justify-content: space-between;
@@ -39,115 +53,159 @@ Created: 2025-08-14 11:05:00 */
   font-size: 9pt;
   line-height: 1.5;
 }
+
 .company-info-main .brand {
   font-weight: 600;
   font-size: 11pt;
-  color: #111827;
+  color: var(--color-text-primary);
 }
-.company-info-main p {
-  margin: 0;
-}
-.company-info-main a {
-  color: #007aff;
-  text-decoration: none;
-}
-.company-info-date {
-  text-align: right;
-}
-.company-info-date .date {
-  font-weight: 500;
-}
+
+.company-info-main p { margin: 0; }
+.company-info-main a { color: var(--color-accent); text-decoration: none; }
+.company-info-date { text-align: right; }
+.company-info-date .date { font-weight: 500; }
+
+/* --- MODERN TABLE STYLES --- */
 .items-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
 }
+
 .items-table th {
   padding: 0.75rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--color-text-primary);
   font-weight: 600;
   text-align: left;
-  color: #374151;
-  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  text-transform: none; /* Use Title Case from data, not forced uppercase */
   font-size: 8pt;
   letter-spacing: 0.5px;
 }
+
 .items-table td {
-  padding: 0.75rem;
+  padding: 0.85rem 0.75rem; /* More vertical padding for breathing room */
   vertical-align: top;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--color-border-light);
 }
-.items-table .no, .items-table .volume, .items-table .unit {
-  text-align: center;
+
+/* Remove all other borders for a clean, open look */
+.items-table, .items-table td, .items-table th {
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
-.items-table .price, .items-table .total {
-  text-align: right;
-}
+
+.items-table .no, .items-table .volume, .items-table .unit { text-align: center; }
+.items-table .price, .items-table .total { text-align: right; }
+
 .items-table .item-header-row td {
   font-weight: 600;
-  background-color: #f3f4f6;
-  color: #111827;
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
 }
-.items-table .sub-item {
-  padding-left: 1.5rem;
+
+.items-table .sub-item { padding-left: 1.5rem; }
+
+/* Remove bottom border from the very last item row */
+.items-table tbody tr:last-child td {
+  border-bottom: none;
 }
-.items-table tfoot td {
-  border: none;
-  text-align: right;
-  padding: 0.25rem 0.75rem;
-}
-.items-table tfoot .summary-label {
-  color: #6b7280;
-  text-align: right;
-  padding-right: 2em; /* Add space between label and value */
-}
-.items-table tfoot .summary-value {
-  font-weight: 500;
-  color: #111827;
-  white-space: nowrap; /* Prevent value from wrapping */
-}
-.items-table tfoot .grand-total td {
-  font-weight: 700;
-  font-size: 11pt;
-  padding-top: 0.75rem;
-  border-top: 2px solid #374151;
-}
-.footer-columns {
+
+/* --- DEDICATED SUMMARY BLOCK --- */
+.summary-block {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  border-top: 1px solid #e5e7eb;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.summary-table {
+  width: 50%;
+  max-width: 350px;
+  border-collapse: collapse;
+}
+
+.summary-table td {
+  padding: 0.5rem 0;
+}
+
+.summary-table .summary-label {
+  text-align: right;
+  padding-right: 2rem;
+  color: var(--color-text-secondary);
+}
+
+.summary-table .summary-value {
+  text-align: right;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.summary-table .grand-total td {
+  font-weight: 700;
+  font-size: 12pt;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-text-primary);
+  color: var(--color-accent);
+}
+
+/* --- VERTICAL FOOTER LAYOUT --- */
+.footer-content {
+  border-top: 1px solid var(--color-border-light);
   padding-top: 1.5rem;
 }
-.footer-columns h3 {
+
+.footer-content h3 {
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 10pt;
+  color: var(--color-text-primary);
 }
+
 .terms-section {
-  flex: 1;
-  padding-right: 2rem; /* Added padding for better spacing */
+  margin-bottom: 2rem; /* Space between stacked sections */
 }
-.payment-section {
-  flex-basis: 40%;
+
+/* --- ADDED: STYLING FOR RICH TEXT CONTENT --- */
+.terms-content ul, .terms-content ol {
+  padding-left: 1.5em; /* Indent lists properly */
+  margin: 0.5em 0;
 }
+.terms-content li {
+  margin-bottom: 0.5em; /* Space out list items */
+}
+.terms-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.terms-content p {
+  margin: 0 0 0.5em;
+}
+.terms-content p:last-child {
+  margin-bottom: 0;
+}
+/* --- END OF ADDED STYLES --- */
+
 .milestones-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1rem;
 }
+
 .milestones-table td {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border-dark);
   padding: 0.5rem;
 }
+
 .bank-info {
-  background-color: #f3f4f6;
+  background-color: var(--color-bg-subtle);
   padding: 0.75rem;
   border-radius: 6px;
 }
-.bank-info p {
-  margin: 0;
-}
+
+.bank-info p { margin: 0; }
+
 @page {
   size: A4;
   margin: 0;

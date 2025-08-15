@@ -142,9 +142,10 @@ function initTinyMCE() {
     tinymce.init({
       selector: '#terms-editor',
       menubar: false,
-      toolbar: 'bold italic | bullist numlist',
-      plugins: 'lists autolink',
-      height: 150,
+      // UPDATED: Added more plugins and a more comprehensive toolbar
+      plugins: 'lists autolink link',
+      toolbar: 'undo redo | bold italic underline | bullist numlist | alignleft aligncenter alignright | link',
+      height: 200, // Increased height for better editing experience
       content_style: "body { font-family: 'Inter', sans-serif; font-size: 14px; }",
       setup: (editor) => {
         tinymceEditor = editor;

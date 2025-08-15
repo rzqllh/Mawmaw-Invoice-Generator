@@ -7,7 +7,6 @@ import { fmtIDR, parseNum, escapeHtml, formatDateFull, renderHtml } from '../uti
 import { calculate } from '../calculator.js';
 
 export function render(data) {
-    // All calculation logic is now handled by the imported calculator module.
     const calc = calculate(data);
 
     const itemsHtml = data.items.map((item, index) => {
@@ -53,6 +52,21 @@ export function render(data) {
     <p>${escapeHtml(paymentInfo.accountHolder)}</p>
   `;
 
+    // REFACTORED: Summary block is now separate from the items table for better visual hierarchy.
+    const summaryHtml = `
+      <div class="summary-block">
+        <table class="summary-table">
+          <tbody>
+            <tr><td class="summary-label">Total</td><td class="summary-value">${fmtIDR(calc.subtotal)}</td></tr>
+            ${calc.discountValue > 0 ? `<tr><td class="summary-label">Potongan (${data.summary.discountPct}%)</td><td class="summary-value">- ${fmtIDR(calc.discountValue)}</td></tr>` : ''}
+            ${calc.discountValue > 0 ? `<tr><td class="summary-label">Subtotal</td><td class="summary-value">${fmtIDR(calc.totalAfterDiscount)}</td></tr>` : ''}
+            ${data.summary.rounding !== 0 ? `<tr><td class="summary-label">Pembulatan</td><td class="summary-value">${fmtIDR(calc.rounding)}</td></tr>` : ''}
+            <tr class="grand-total"><td class="summary-label">Grand Total</td><td class="summary-value">${fmtIDR(calc.finalTotal)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+
     return `
     <div class="invoice-rinci">
       <header class="invoice-header">
@@ -79,17 +93,11 @@ export function render(data) {
             </tr>
           </thead>
           <tbody>${itemsHtml}</tbody>
-          <tfoot>
-            <tr><td colspan="5" class="summary-label">TOTAL</td><td class="summary-value">${fmtIDR(calc.subtotal)}</td></tr>
-            ${calc.discountValue > 0 ? `<tr><td colspan="5" class="summary-label">POTONGAN (${data.summary.discountPct}%)</td><td class="summary-value">- ${fmtIDR(calc.discountValue)}</td></tr>` : ''}
-            ${calc.discountValue > 0 ? `<tr><td colspan="5" class="summary-label">SUBTOTAL</td><td class="summary-value">${fmtIDR(calc.totalAfterDiscount)}</td></tr>` : ''}
-            ${data.summary.rounding !== 0 ? `<tr><td colspan="5" class="summary-label">PEMBULATAN</td><td class="summary-value">${fmtIDR(calc.rounding)}</td></tr>` : ''}
-            <tr class="grand-total"><td colspan="5" class="summary-label">GRAND TOTAL</td><td class="summary-value">${fmtIDR(calc.finalTotal)}</td></tr>
-          </tfoot>
         </table>
+        ${summaryHtml}
       </main>
       <footer>
-        <div class="footer-columns">
+        <div class="footer-content">
           <div class="terms-section">
             <h3>Syarat & Ketentuan</h3>
             <div class="terms-content">${renderHtml(data.terms)}</div>
