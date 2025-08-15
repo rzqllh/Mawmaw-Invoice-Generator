@@ -8,7 +8,7 @@ Created: 2025-08-14 11:05:00 -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Invoicer</title>
-  <!-- Bulma Framework (for Grid System & Helpers) -->
+  <!-- Bulma Framework (Used only for .columns grid system) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,11 +16,35 @@ Created: 2025-08-14 11:05:00 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- TinyMCE -->
   <script src="https://cdn.tiny.cloud/1/qsowa2oxzv8qij7v5muqjx3obtyzvj9o30w7juw5yzlb5qup/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
-  <!-- Custom Styles (Full Rebuild 2.0) -->
+  <!-- Custom Styles (Full Rebuild 3.0 - HIG) -->
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/preview.css" />
 </head>
 <body>
+
+  <!-- NEW: Global Header for all primary actions -->
+  <header class="global-header">
+    <div class="header-group-left">
+      <div class="dropdown" id="document-dropdown">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="document-menu" data-action="toggle-dropdown">
+            <span>Dokumen</span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="document-menu" role="menu">
+          <div class="dropdown-content">
+            <a href="#" class="dropdown-item" data-action="new">Dokumen Baru</a>
+            <a href="#" class="dropdown-item" data-action="save">Simpan Preset</a>
+            <a href="#" class="dropdown-item" data-action="load">Muat Preset</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-group-right">
+      <button class="button" data-action="toggle-panel" title="Buka/Tutup Editor">Edit</button>
+      <button data-action="print" class="button is-primary">Simpan PDF</button>
+    </div>
+  </header>
 
   <!-- The main canvas where the preview lives -->
   <main class="preview-canvas">
@@ -32,7 +56,7 @@ Created: 2025-08-14 11:05:00 -->
   <!-- The floating panel that slides in for editing -->
   <aside id="floating-panel" class="floating-panel">
     <div class="panel-header">
-      <h2 id="panel-title" class="panel-title">Editor</h2>
+      <h2 class="panel-title">Editor</h2>
       <div id="panel-tabs" class="panel-tabs">
         <!-- Tabs will be rendered here by JavaScript -->
       </div>
@@ -42,28 +66,6 @@ Created: 2025-08-14 11:05:00 -->
       <!-- Dynamic editor content will be rendered here -->
     </div>
   </aside>
-
-  <!-- The main action toolbar (REFACTORED for simplicity) -->
-  <div class="action-toolbar">
-    <div class="dropdown" id="document-dropdown">
-      <div class="dropdown-trigger">
-        <button class="button" aria-haspopup="true" aria-controls="document-menu" data-action="toggle-dropdown">
-          <span>Dokumen</span>
-        </button>
-      </div>
-      <div class="dropdown-menu" id="document-menu" role="menu">
-        <div class="dropdown-content">
-          <a href="#" class="dropdown-item" data-action="new">Dokumen Baru</a>
-          <a href="#" class="dropdown-item" data-action="save">Simpan Preset</a>
-          <a href="#" class="dropdown-item" data-action="load">Muat Preset</a>
-        </div>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <button class="button is-info" data-action="toggle-panel" title="Buka/Tutup Editor">Edit</button>
-    <div class="divider"></div>
-    <button data-action="print" class="button is-primary">Simpan PDF</button>
-  </div>
 
   <div id="app-overlay" class="app-overlay"></div>
 
@@ -85,7 +87,7 @@ Created: 2025-08-14 11:05:00 -->
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" data-action="confirm-save-preset">Simpan</button>
-        <button class="button" data-action="cancel-save-preset">Cancel</button>
+        <button class="button" data-action="cancel-save-preset">Batal</button>
       </footer>
     </div>
   </div>

@@ -1,7 +1,7 @@
 // === Hafizh Signature Code ===
 // Author: Hafizh Rizqullah — Invoice Generator
 // File: js/editor.js
-// Created: 2025-08-14 10:12:03
+// Created: 2025--08-14 10:12:03
 
 import { state } from './state.js';
 import * as mutators from './mutators.js';
@@ -68,7 +68,7 @@ function renderPanelContent() {
   switch (state.ui.activeEditorTab) {
     case 'info':
       contentDiv.innerHTML = `
-        <div class="field"><label class="label">Logo Brand</label><div class="control"><input type="file" id="logo-upload" accept="image/*" class="input"></div></div>
+        <div class="field"><label class="label">Logo Brand</label><div class="control"><input type="file" id="logo-upload" class="input"></div></div>
         <div class="field"><label class="label">Nama Brand</label><div class="control"><input type="text" data-path="company.name" class="input" value="${escapeHtml(data.company.name)}"></div></div>
         <div class="field"><label class="label">Tanggal Invoice</label><div class="control"><input type="date" data-path="invoice.date" class="input" value="${data.invoice.date}"></div></div>
         <div class="field"><label class="label">Alamat Brand</label><div class="control"><textarea data-path="company.address" class="textarea" rows="2">${escapeHtml(data.company.address)}</textarea></div></div>
@@ -155,7 +155,7 @@ function initTinyMCE() {
       plugins: 'lists autolink link',
       toolbar: 'undo redo | bold italic underline | bullist numlist | alignleft aligncenter alignright | link',
       height: 200,
-      content_style: "body { font-family: 'Inter', sans-serif; font-size: 14px; }",
+      content_style: "body { font-family: var(--font-family-system); font-size: 14px; }",
       setup: (editor) => {
         tinymceEditor = editor;
         editor.on('init', () => editor.setContent(state.invoiceRinci.terms || ''));
