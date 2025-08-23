@@ -1,0 +1,181 @@
+/* === NEW Sidebar Component Styles === */
+.sidebar {
+  width: 260px; /* Expanded width */
+  flex-shrink: 0;
+  background-color: var(--color-white);
+  border-right: var(--border-width) solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-4);
+  transition: width 0.3s ease;
+  border-radius: var(--radius-xl);
+  margin: var(--spacing-4);
+  height: calc(100vh - (var(--spacing-4) * 2));
+  box-shadow: var(--shadow-md);
+}
+
+.sidebarHeader {
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+  flex-shrink: 0;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-gray-50);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.userInfo {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.userName {
+  display: block;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  font-size: var(--font-size-sm);
+}
+.sessionInfo {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}
+.powerButton {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: #16A34A; /* Green */
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+.powerButton:hover {
+  background-color: #15803D;
+}
+
+.sidebarNav {
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+.navGroup:not(:last-child) {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-4);
+}
+.groupTitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-400);
+  padding: 0 var(--spacing-3);
+  margin-bottom: var(--spacing-2);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  height: 44px;
+  overflow: hidden;
+  position: relative;
+}
+.navLabel {
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  opacity: 1;
+  flex-grow: 1;
+}
+.navIcon {
+  flex-shrink: 0;
+}
+.navItem:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+.navItem.active {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-semibold);
+}
+.badge {
+  background-color: #DC2626; /* Red */
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* --- COLLAPSED STATE --- */
+.sidebar.isCollapsed {
+  width: 88px; /* Collapsed width */
+}
+.sidebar.isCollapsed .userInfo,
+.sidebar.isCollapsed .navLabel,
+.sidebar.isCollapsed .groupTitle,
+.sidebar.isCollapsed .badge,
+.sidebar.isCollapsed .powerButton {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sidebar.isCollapsed .userProfile {
+  padding: var(--spacing-2);
+  justify-content: center;
+}
+.sidebar.isCollapsed .navItem {
+  justify-content: center;
+}
+.sidebar.isCollapsed .navItem.active {
+  background-color: var(--color-gray-900);
+  color: var(--color-white);
+}
+/* Tooltip for collapsed state */
+.sidebar.isCollapsed .navItem:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 12px;
+  background-color: var(--color-gray-900);
+  color: var(--color-white);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  z-index: 10;
+}

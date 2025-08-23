@@ -1,0 +1,14 @@
+.currencyCell {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: var(--spacing-2);
+}
+.currencySymbol {
+    color: var(--color-gray-500);
+}
+.currencyValue {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-gray-900);
+}

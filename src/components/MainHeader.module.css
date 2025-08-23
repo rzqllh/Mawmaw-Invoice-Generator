@@ -1,0 +1,22 @@
+.header {
+    height: var(--toolbar-height);
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 var(--spacing-6);
+    flex-shrink: 0;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+@media (max-width: 1024px) {
+    .header {
+        display: none; /* Hide on mobile, actions are in sidebar footer */
+    }
+}

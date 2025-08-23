@@ -1,0 +1,141 @@
+import React, { useState } from 'react';
+import { Plus, Trash2, Copy, Move, PlusCircle } from 'react-feather';
+import { generateUUID } from '@/utils.js';
+import styles from './Editors.module.css';
+
+function ItemsEditor({ state, setState }) {
+    const { items } = state;
+    const [draggedItem, setDraggedItem] = useState(null);
+    const handleFieldChange = (groupIndex, itemIndex, field, value) => {
+        const newItems = [...items];
+        const val = (field === 'qty' || field === 'price') ? parseFloat(value) || 0 : value;
+        newItems[groupIndex].details[itemIndex][field] = val;
+        setState({ ...state, items: newItems });
+    };
+    const handleGroupFieldChange = (groupIndex, field, value) => {
+        const newItems = [...items];
+        newItems[groupIndex][field] = value;
+        setState({ ...state, items: newItems });
+    };
+    const addGroup = () => {
+        const newGroup = { id: generateUUID(), groupName: 'New Group', details: [] };
+        setState({ ...state, items: [...items, newGroup] });
+    };
+    const deleteGroup = (groupIndex) => {
+        const newItems = items.filter((_, index) => index !== groupIndex);
+        setState({ ...state, items: newItems });
+    };
+    const duplicateGroup = (groupIndex) => {
+        const originalGroup = items[groupIndex];
+        const newGroup = JSON.parse(JSON.stringify(originalGroup));
+        newGroup.id = generateUUID();
+        newGroup.details.forEach(item => item.id = generateUUID());
+        const newItems = [...items];
+        newItems.splice(groupIndex + 1, 0, newGroup);
+        setState({ ...state, items: newItems });
+    };
+    const addItemToGroup = (groupIndex) => {
+        const newItem = { id: generateUUID(), description: 'New Item', qty: 1, unit: 'pcs', price: 0 };
+        const newItems = [...items];
+        newItems[groupIndex].details.push(newItem);
+        setState({ ...state, items: newItems });
+    };
+    const deleteItemDetail = (groupIndex, itemIndex) => {
+        const newItems = [...items];
+        newItems[groupIndex].details = newItems[groupIndex].details.filter((_, index) => index !== itemIndex);
+        setState({ ...state, items: newItems });
+    };
+    const duplicateItemDetail = (groupIndex, itemIndex) => {
+        const originalItem = items[groupIndex].details[itemIndex];
+        const newItem = { ...JSON.parse(JSON.stringify(originalItem)), id: generateUUID() };
+        const newItems = [...items];
+        newItems[groupIndex].details.splice(itemIndex + 1, 0, newItem);
+        setState({ ...state, items: newItems });
+    };
+    const onDragStart = (e, type, groupIndex, itemIndex = null) => {
+        setDraggedItem({ type, groupIndex, itemIndex });
+        e.dataTransfer.effectAllowed = 'move';
+    };
+    const onDragOver = (e) => { e.preventDefault(); };
+    const onDrop = (e, type, targetGroupIndex, targetItemIndex = null) => {
+        if (!draggedItem) return;
+        const newItems = [...items];
+        if (draggedItem.type === 'group' && type === 'group') {
+            const [movedGroup] = newItems.splice(draggedItem.groupIndex, 1);
+            newItems.splice(targetGroupIndex, 0, movedGroup);
+        }
+        if (draggedItem.type === 'item' && type === 'item') {
+            if (draggedItem.groupIndex === targetGroupIndex) {
+                const group = newItems[draggedItem.groupIndex];
+                const [movedItem] = group.details.splice(draggedItem.itemIndex, 1);
+                group.details.splice(targetItemIndex, 0, movedItem);
+            } else {
+                const sourceGroup = newItems[draggedItem.groupIndex];
+                const [movedItem] = sourceGroup.details.splice(draggedItem.itemIndex, 1);
+                const targetGroup = newItems[targetGroupIndex];
+                targetGroup.details.splice(targetItemIndex, 0, movedItem);
+            }
+        }
+        setState({ ...state, items: newItems });
+        setDraggedItem(null);
+    };
+    return (
+        <div>
+            <h3>Items Pekerjaan</h3>
+            <div>
+                {items.map((group, groupIndex) => (
+                    <div key={group.id} className={styles.editorGroup} draggable onDragStart={(e) => onDragStart(e, 'group', groupIndex)} onDragOver={onDragOver} onDrop={(e) => onDrop(e, 'group', groupIndex)}>
+                        <div className={styles.editorGroupHeader}>
+                            <div className={styles.editorGroupTitle}>
+                                <Move className={styles.dragHandle} size={18} />
+                                <input type="text" value={group.groupName} onChange={(e) => handleGroupFieldChange(groupIndex, 'groupName', e.target.value)} placeholder="Nama Grup" />
+                            </div>
+                            <div className={styles.editorGroupActions}>
+                                <button className={styles.btnIcon} title="Duplicate Group" onClick={() => duplicateGroup(groupIndex)}><Copy size={16} /></button>
+                                <button className={`${styles.btnIcon} ${styles.btnIconDanger}`} title="Delete Group" onClick={() => deleteGroup(groupIndex)}><Trash2 size={16} /></button>
+                            </div>
+                        </div>
+                        <div className={styles.editorGroupContent}>
+                            {group.details.map((item, itemIndex) => (
+                                <div key={item.id} className={styles.itemRow} draggable onDragStart={(e) => onDragStart(e, 'item', groupIndex, itemIndex)} onDragOver={onDragOver} onDrop={(e) => onDrop(e, 'item', groupIndex, itemIndex)}>
+                                    <Move className={styles.dragHandle} size={16} />
+                                    <div className={styles.itemInputsContainer}>
+                                        <div className={styles.itemMainInput}>
+                                            <div className={styles.formGroup}>
+                                                <label>Deskripsi</label>
+                                                <input type="text" value={item.description} onChange={(e) => handleFieldChange(groupIndex, itemIndex, 'description', e.target.value)} />
+                                            </div>
+                                        </div>
+                                        <div className={styles.itemSubInputs}>
+                                            <div className={styles.formGroup}>
+                                                <label>Qty</label>
+                                                <input type="number" value={item.qty} onChange={(e) => handleFieldChange(groupIndex, itemIndex, 'qty', e.target.value)} />
+                                            </div>
+                                            <div className={styles.formGroup}>
+                                                <label>Unit</label>
+                                                <input type="text" value={item.unit} onChange={(e) => handleFieldChange(groupIndex, itemIndex, 'unit', e.target.value)} />
+                                            </div>
+                                            <div className={styles.formGroup}>
+                                                <label>Harga</label>
+                                                <input type="number" value={item.price} onChange={(e) => handleFieldChange(groupIndex, itemIndex, 'price', e.target.value)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.itemActions}>
+                                        <button className={styles.btnIcon} onClick={() => duplicateItemDetail(groupIndex, itemIndex)} title="Duplicate Item"><Copy size={14} /></button>
+                                        <button className={`${styles.btnIcon} ${styles.btnIconDanger}`} onClick={() => deleteItemDetail(groupIndex, itemIndex)} title="Delete Item"><Trash2 size={14} /></button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className={styles.editorGroupFooter}>
+                            <button className={`${styles.btnSecondary} ${styles.btnFull}`} onClick={() => addItemToGroup(groupIndex)}><Plus size={16} /> Tambah Item</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <button className={`${styles.btnPrimary} ${styles.btnFull}`} onClick={addGroup}><PlusCircle size={16} /> Tambah Grup Pekerjaan</button>
+        </div>
+    );
+}
+export default ItemsEditor;

@@ -1,0 +1,52 @@
+.appContainer {
+    display: flex;
+    height: 100vh;
+    background-color: var(--color-gray-100);
+}
+
+.contentWrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Prevent double scrollbars */
+}
+
+.mainContent {
+    flex-grow: 1;
+    padding: var(--spacing-4); /* Simplified padding */
+    padding-left: 0;
+    overflow-y: auto;
+}
+
+.previewPanel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.invoicePaper {
+    background-color: var(--color-white);
+    margin: 0;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    border: var(--border-width) solid var(--border-color);
+    width: 210mm;
+    min-height: 297mm;
+    transform-origin: top center;
+    transform: scale(0.9); 
+}
+
+@media (max-width: 1024px) {
+    /* Mobile styles might need adjustments with the new sidebar */
+    .mainContent {
+        padding: var(--spacing-4);
+    }
+    .invoicePaper {
+        transform: scale(1);
+        width: 100%;
+        min-height: auto;
+    }
+}
