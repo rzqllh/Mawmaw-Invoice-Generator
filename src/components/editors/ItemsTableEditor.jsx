@@ -79,7 +79,7 @@ function ItemsTableEditor({ state, setState }) {
         <div className={styles.panel}>
             <header className={styles.panelHeader}>
                 <div className={styles.panelTitle}>
-                    <h2>Items Pekerjaan</h2>
+                    <h2>Item Pekerjaan</h2>
                     <p>Atur semua item pekerjaan di sini.</p>
                 </div>
                 <div className={styles.panelActions}>

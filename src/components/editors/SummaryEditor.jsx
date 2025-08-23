@@ -1,6 +1,6 @@
 import React from 'react';
 import { CURRENCIES } from '@/config/default.js';
-import RichTextEditor from './RichTextEditor'; // Import the new editor
+import RichTextEditor from './RichTextEditor';
 import styles from './Editors.module.css';
 
 function SummaryEditor({ state, updateField }) {
@@ -28,7 +28,6 @@ function SummaryEditor({ state, updateField }) {
             </div>
             <div className={styles.formGroup}>
                 <label>Catatan</label>
-                {/* Replace textarea with RichTextEditor */}
                 <RichTextEditor 
                     value={summary.notes}
                     onChange={(content) => updateField('summary.notes', content)}

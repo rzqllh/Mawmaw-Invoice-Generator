@@ -2,7 +2,6 @@ import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
 function RichTextEditor({ value, onChange }) {
-  // Get your free API key from tiny.cloud
   const apiKey = 'qsowa2oxzv8qij7v5muqjx3obtyzvj9o30w7juw5yzlb5qup'; 
 
   return (

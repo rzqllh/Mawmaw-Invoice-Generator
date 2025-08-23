@@ -1,7 +1,7 @@
-/* === Preview Component Styles (READABILITY IMPROVED) === */
+/* === Preview Component Styles (FULLY REFINED) === */
 
 .previewContent {
-    padding: 60px;
+    padding: 60px 70px;
     font-size: 10pt;
     color: var(--color-gray-700);
 }
@@ -20,7 +20,12 @@
 .companyLogoPlaceholder { width: 100%; height: 100%; border-radius: var(--radius-lg); background-color: var(--color-primary-500); color: var(--color-white); display: flex; align-items: center; justify-content: center; }
 .companyLogoPlaceholder svg { width: 28px; height: 28px; }
 .invoiceTitle { text-align: right; }
-.invoiceTitle h1 { font-size: 3.2em; font-weight: 800; color: var(--color-primary-500); line-height: 1; }
+.invoiceTitle h1 {
+    font-size: 3.2em;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-500);
+    line-height: 1;
+}
 .invoiceTitle p { font-size: 1.1em; color: var(--color-gray-500); margin-top: var(--spacing-1); font-family: monospace; }
 
 /* Meta Info */
@@ -29,48 +34,42 @@
 .metaCol h4 { font-size: 0.9em; font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--spacing-2); }
 .metaCol p { line-height: 1.6; color: var(--color-gray-700); white-space: pre-wrap; font-weight: var(--font-weight-normal); }
 
-/* Items Table (IMPROVED) */
-.itemsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: var(--spacing-8);
-    font-size: 0.95em;
-}
+/* Items Table */
+.itemsTable { width: 100%; border-collapse: collapse; margin-top: var(--spacing-8); font-size: 0.95em; }
 .itemsTable thead tr { border-bottom: 2px solid var(--color-gray-900); }
-.itemsTable thead th { padding: 0 var(--spacing-2) var(--spacing-3); font-weight: var(--font-weight-bold); font-size: 0.9em; color: var(--color-gray-900); text-transform: none; letter-spacing: 0; }
-.itemsTable td { padding: var(--spacing-3) var(--spacing-2); vertical-align: top; }
-
-.thNo { width: 5%; }
-.thDesc { width: 40%; text-align: left;}
-.thQty { width: 10%; }
-.thUnit { width: 10%; }
-.thPrice { width: 17%; }
-.thTotal { width: 18%; }
+.itemsTable thead th {
+    padding: 0 var(--spacing-2) var(--spacing-3);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.9em;
+    color: var(--color-gray-900);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+.itemsTable td { padding: var(--spacing-3) var(--spacing-2); vertical-align: top; font-variant-numeric: tabular-nums; }
+.thNo { width: 5%; } .thDesc { width: 40%; text-align: left;} .thQty { width: 10%; }
+.thUnit { width: 10%; } .thPrice { width: 17%; } .thTotal { width: 18%; }
 
 .itemGroupHeader {
-    background-color: var(--color-gray-50);
+    background-color: transparent;
 }
 .itemGroupHeader td {
     font-weight: var(--font-weight-bold);
     color: var(--color-gray-900);
-    padding-top: var(--spacing-3);
-    padding-bottom: var(--spacing-3);
-    border-top: 1.5px solid var(--color-gray-300);
+    padding-top: var(--spacing-4);
     border-bottom: 1px solid var(--color-gray-300);
 }
-.itemDetail td {
-    border-bottom: var(--border-width) solid var(--border-color);
-}
+.itemDetail td { border-bottom: var(--border-width) solid var(--color-gray-200); }
 .itemDetail:last-child td { border-bottom: none; }
 
-/* Summary Section (IMPROVED) */
+/* Summary Section */
 .invoiceSummarySection {
     margin-top: var(--spacing-8);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--spacing-8);
-    border-top: 2px solid var(--color-gray-900);
+    border-top: 2px solid var(--color-gray-200);
     padding-top: var(--spacing-6);
 }
 .paymentStagesContainer { flex: 1.5; }
@@ -78,18 +77,12 @@
 .paymentStagesTable { width: 100%; font-size: 0.95em; }
 .paymentStagesTable td { padding: var(--spacing-2) 0; }
 .paymentStagesTable td:nth-child(2) { padding: 0 var(--spacing-4); }
-
-.summaryDetailsContainer {
-    flex: 1;
-    max-width: 350px;
-    width: 100%;
-}
+.summaryDetailsContainer { flex: 1; max-width: 350px; width: 100%; }
 .summaryDetailsTable { width: 100%; }
 .summaryDetailsTable td { padding: var(--spacing-3); }
-.summaryDetailsTable tr:not(:last-child) td {
-    border-bottom: var(--border-width) solid var(--border-color);
-}
+.summaryDetailsTable tr:not(:last-child) td { border-bottom: var(--border-width) solid var(--color-gray-200); }
 .summaryDetailsTable td:last-child { text-align: right; }
+.grandTotal { border-top: 2px solid var(--color-gray-900); }
 .grandTotal td {
     font-weight: var(--font-weight-bold);
     font-size: 1.3em;
@@ -97,23 +90,19 @@
     padding-top: var(--spacing-4);
     padding-bottom: var(--spacing-4);
 }
-.grandTotal td:first-child {
-    color: var(--color-primary-500);
-}
+.grandTotal td:first-child { color: var(--color-primary-500); }
 
-/* Notes Section (IMPROVED) */
-.notesSection {
-    margin-top: var(--spacing-8);
-}
+/* Notes Section */
+.notesSection { margin-top: var(--spacing-8); }
 .notesBox {
     background-color: var(--color-gray-50);
     border-radius: var(--radius-lg);
     padding: var(--spacing-6);
-    border: 1px solid var(--border-color);
+    border: none;
 }
 .notesBox ul, .notesBox p {
-    font-size: 0.9em;
-    color: var(--color-gray-500);
+    font-size: 0.95em;
+    color: var(--color-gray-600);
     line-height: 1.7;
 }
 .notesBox ul { padding-left: 20px; }
@@ -126,80 +115,3 @@
 .paymentInfoCol { flex: 1; }
 .paymentInfoCol h4 { font-size: 0.9em; color: var(--color-gray-900); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-1); }
 .paymentInfoCol p { font-weight: var(--font-weight-normal); color: var(--color-gray-700); white-space: pre-wrap; }
-
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    .previewContent { padding: 30px; font-size: 9pt; }
-    .invoiceHeader { flex-direction: column; gap: var(--spacing-6); }
-    .invoiceTitle { text-align: left; }
-    .invoiceMeta { flex-direction: column; }
-    .invoiceSummarySection { flex-direction: column; gap: var(--spacing-8); }
-    .summaryDetailsContainer { max-width: none; }
-    .paymentInfoBody { flex-direction: column; }
-}
-
-/* --- Print Layout Overrides --- */
-@media print {
-    .previewContent {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        padding: 40px;
-    }
-    .invoiceHeader, .invoiceMeta, .itemsTable, .invoiceSummarySection, .notesSection {
-        border-bottom: 1px solid var(--color-gray-300);
-        padding-bottom: var(--spacing-6);
-        margin-bottom: var(--spacing-6);
-    }
-    .invoiceHeader {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: var(--spacing-4);
-    }
-    .invoiceTitle {
-        text-align: left;
-        margin-top: var(--spacing-2);
-    }
-    .invoiceTitle h1 { font-size: 2.5em; }
-    .invoiceTitle p { font-size: 1em; }
-    .invoiceMeta {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--spacing-4);
-        border-top: none;
-        border-bottom-width: 1px;
-    }
-    .metaCol:nth-child(3) {
-        grid-column: 2 / 3;
-        grid-row: 1 / 3;
-    }
-    .itemsTable {
-        margin-top: 0;
-        border-bottom-width: 1px;
-    }
-    .invoiceSummarySection {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-end; /* THE FIX for summary alignment */
-        gap: var(--spacing-6);
-        page-break-inside: avoid;
-    }
-    .summaryDetailsContainer {
-        width: auto;
-        max-width: 350px;
-        flex-shrink: 0;
-    }
-    .notesSection, .paymentInfoFooter {
-        page-break-inside: avoid;
-    }
-    .paymentInfoFooter {
-        border-top: none;
-        margin-top: var(--spacing-6);
-        padding-top: 0;
-    }
-    .paymentInfoBody {
-        display: grid; /* THE FIX for footer layout */
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: var(--spacing-4);
-    }
-}

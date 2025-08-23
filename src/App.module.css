@@ -2,6 +2,34 @@
     display: flex;
     height: 100vh;
     background-color: var(--color-gray-100);
+    position: relative; /* For positioning context */
+}
+
+.collapseButton {
+    position: fixed;
+    top: 28px;
+    left: calc(var(--sidebar-width) + var(--spacing-4) - 18px); /* 320 + 16 - 18 */
+    z-index: 100;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-white);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-gray-500);
+    transition: left 0.3s ease, transform 0.3s ease, background-color 0.2s;
+}
+.collapseButton:hover {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+}
+.appContainer.sidebarCollapsed .collapseButton {
+    left: calc(var(--sidebar-width-collapsed) + var(--spacing-4) - 18px); /* 88 + 16 - 18 */
+    transform: rotate(180deg);
 }
 
 .contentWrapper {
@@ -9,13 +37,12 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow: hidden; /* Prevent double scrollbars */
+    overflow: hidden;
 }
 
 .mainContent {
     flex-grow: 1;
-    padding: var(--spacing-4); /* Simplified padding */
-    padding-left: 0;
+    padding: var(--spacing-4) var(--spacing-6);
     overflow-y: auto;
 }
 
@@ -30,17 +57,22 @@
 .invoicePaper {
     background-color: var(--color-white);
     margin: 0;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-card);
     border-radius: var(--radius-md);
     border: var(--border-width) solid var(--border-color);
     width: 210mm;
     min-height: 297mm;
     transform-origin: top center;
-    transform: scale(0.9); 
+    transform: scale(0.95);
 }
 
 @media (max-width: 1024px) {
-    /* Mobile styles might need adjustments with the new sidebar */
+    .collapseButton {
+        display: none;
+    }
+    .contentWrapper {
+        padding-top: var(--toolbar-height);
+    }
     .mainContent {
         padding: var(--spacing-4);
     }

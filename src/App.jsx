@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
 import { produce } from 'immer';
+import { ChevronsLeft } from 'react-feather';
 import { getGeneralDefaultState } from '@/config/default.js';
 import { deepMerge } from '@/utils.js';
 import Sidebar from '@/components/Sidebar';
@@ -9,7 +10,6 @@ import ItemsTableEditor from '@/components/editors/ItemsTableEditor';
 import Notification from '@/components/Notification';
 import styles from './App.module.css';
 
-// Reducer remains the same, but let's integrate sidebarCollapsed
 function appReducer(state, action) {
   switch (action.type) {
     case 'SET_STATE':
@@ -44,6 +44,10 @@ function appReducer(state, action) {
       return { ...state, notification: action.payload };
     case 'HIDE_NOTIFICATION':
       return { ...state, notification: null };
+    case 'TOGGLE_MOBILE_SIDEBAR': {
+      const shouldOpen = typeof action.payload === 'boolean' ? action.payload : !state.ui.isMobileSidebarOpen;
+      return { ...state, ui: { ...state.ui, isMobileSidebarOpen: shouldOpen } };
+    }
     case 'TOGGLE_SIDEBAR_COLLAPSE': {
         return produce(state, draft => {
             draft.ui.sidebarCollapsed = !draft.ui.sidebarCollapsed;
@@ -78,7 +82,8 @@ function App() {
   const actions = useMemo(() => ({
     updateField: (path, value) => dispatch({ type: 'UPDATE_FIELD', payload: { path, value } }),
     setState: (newState) => dispatch({ type: 'SET_STATE', payload: newState }),
-    toggleSidebarCollapse: () => dispatch({ type: 'TOGGLE_SIDEBAR_COLLAPSE' }), // Updated action
+    toggleMobileSidebar: (force) => dispatch({ type: 'TOGGLE_MOBILE_SIDEBAR', payload: force }),
+    toggleSidebarCollapse: () => dispatch({ type: 'TOGGLE_SIDEBAR_COLLAPSE' }),
     resetState: () => {
       if (confirm('Reset to default template? Unsaved changes will be lost.')) {
         dispatch({ type: 'SET_STATE', payload: getGeneralDefaultState() });
@@ -119,8 +124,10 @@ function App() {
     },
   }), [state]);
 
-  // For this demo, we'll render the invoice preview.
   const renderMainContent = () => {
+    if (state.ui.activeTab === 'items') {
+      return <ItemsTableEditor state={state} setState={actions.setState} />;
+    }
     return (
       <div className={styles.previewPanel}>
         <div id="invoice-paper" className={styles.invoicePaper}>
@@ -129,23 +136,28 @@ function App() {
       </div>
     );
   };
-  
+
   const appContainerClasses = `${styles.appContainer} ${state.ui.sidebarCollapsed ? styles.sidebarCollapsed : ''}`;
 
   return (
     <div className={appContainerClasses}>
-      {/* We pass a simplified Sidebar for the new design */}
       <Sidebar state={state} actions={actions} />
       
+      <button 
+        className={styles.collapseButton} 
+        onClick={actions.toggleSidebarCollapse} 
+        aria-label={state.ui.sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        <ChevronsLeft size={20} />
+      </button>
+
       <div className={styles.contentWrapper}>
         <MainHeader actions={actions} />
         <main className={styles.mainContent}>
           {renderMainContent()}
         </main>
       </div>
-      
       <input type="file" id="file-loader" style={{ display: 'none' }} accept=".json" onChange={actions.loadFile} />
-      
       {state.notification && (
         <Notification
           message={state.notification.message}

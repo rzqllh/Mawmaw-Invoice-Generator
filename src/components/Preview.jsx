@@ -1,6 +1,6 @@
 import React from 'react';
 import DOMPurify from 'dompurify';
-import { Home, MessageSquare } from 'react-feather';
+import { Home } from 'react-feather';
 import CurrencyDisplay from './CurrencyDisplay';
 import styles from './Preview.module.css';
 

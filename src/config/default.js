@@ -1,6 +1,5 @@
 import { generateUUID } from "../utils.js";
 
-// ... (CURRENCIES, BANK_LIST remain the same)
 export const CURRENCIES = [
     { code: 'IDR', symbol: 'Rp', name: 'Rupiah Indonesia' },
     { code: 'USD', symbol: '$', name: 'Dolar Amerika Serikat' },
@@ -16,11 +15,10 @@ export function getGeneralDefaultState() {
     return {
         ui: { 
             activeTab: 'info', 
-            themeColor: '#2563EB', 
+            themeColor: '#2A4B4B', // UPDATED to new green theme
             isMobileSidebarOpen: false,
-            sidebarCollapsed: false, // NEW
+            sidebarCollapsed: false,
         },
-        // ... (rest of the state remains the same)
         company: { name: 'MAWMAW\nINTERIOR', address: 'Jagakarsa, \nJakarta Selatan', logo: '', },
         client: { name: 'Nama Perusahaan/Perorangan', address: 'Alamat, Kota', phone: '+62 812 3456 7890', },
         invoice: { title: 'Invoice', number: '#12345678910', date: '2025-08-01', dueDate: '2025-08-15', },

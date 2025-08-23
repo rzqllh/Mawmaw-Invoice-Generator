@@ -17,6 +17,6 @@
 
 @media (max-width: 1024px) {
     .header {
-        display: none; /* Hide on mobile, actions are in sidebar footer */
+        display: none;
     }
 }
