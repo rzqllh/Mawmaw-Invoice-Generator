@@ -41,15 +41,19 @@ This is a **monolithic single-page application** for speed and simplicity.
 
 Clone the repository:
 
-```bash
+```clone
 git clone https://github.com/rzqllh/Mawmaw-Invoice-Generator.git
+```
+```change-dir
 cd Mawmaw-Invoice-Generator
+```
+```intall-module
 npm install
 ```
 
 ### Development
 
-```bash
+```run-Development
 npm run dev
 ```
 
@@ -57,7 +61,7 @@ Runs the app at [http://localhost:5173](http://localhost:5173) with hot reload.
 
 ### Production Build
 
-```bash
+```Production-Build
 npm run build
 ```
 
@@ -65,7 +69,7 @@ Creates an optimized build in the `dist` folder.
 
 ### Preview Production Build
 
-```bash
+```Preview-Production
 npm run preview
 ```
 
