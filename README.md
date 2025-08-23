@@ -1,12 +1,78 @@
-# React + Vite
+# 📄 Invoice Generator (MAWMAW INTERIOR)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern single-page application built with React and Vite, designed for **fast, clean, and professional invoice creation**. The interface emphasizes clarity and usability—everything you need to generate an invoice is presented in one streamlined view.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+* **Live Preview** – Real-time updates as you edit, ensuring the final invoice always matches what you see.
+* **Unified Sidebar Editor** – All invoice fields (company info, client details, items, terms, notes) in one accessible panel.
+* **Automatic Calculations** – Subtotals, discounts, and totals update instantly as you adjust line items.
+* **Rich Text Notes** – Add formatted notes and terms (lists, emphasis, etc.) for clearer communication.
+* **Save & Resume** – Export your current invoice state as JSON and reload it later.
+* **Print-Optimized Output** – A clean layout designed for both PDF export and physical printing.
+* **Customizable Theme** – Change invoice colors easily with a built-in color picker.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Tech Stack
+
+* **Frontend:** [React](https://react.dev/) with Hooks
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **State Management:** `useReducer` + `immer` for predictable immutable updates
+* **Styling:** CSS Modules + CSS variables for theming
+
+---
+
+## 🧩 Architecture
+
+This is a **monolithic single-page application** for speed and simplicity.
+
+* **`App.jsx`** – Core container with state logic (`useReducer`), action handling, and layout rendering.
+* **`Sidebar.jsx`** – Main control surface: profile info, input fields, and editor controls.
+* **`Preview.jsx`** – A4-style live invoice preview, updated in real-time.
+* **`ItemsTableEditor.jsx`** – Dedicated interface for managing detailed line items.
+* **State Management** – A single, centralized state object updated exclusively via reducer actions, ensuring consistency and debuggability.
+
+---
+
+## 🚀 Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/rzqllh/Mawmaw-Invoice-Generator.git
+cd Mawmaw-Invoice-Generator
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Runs the app at [http://localhost:5173](http://localhost:5173) with hot reload.
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Creates an optimized build in the `dist` folder.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+Serves the `dist` build locally before deployment.
+
+---
+
+## 📌 Notes
+
+This project was developed as a **single-purpose tool** with an emphasis on speed, simplicity, and professional output. Ideal for freelancers, small studios, or anyone needing a lightweight invoice generator without unnecessary complexity.
